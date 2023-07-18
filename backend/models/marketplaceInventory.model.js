@@ -15,8 +15,10 @@ const marketplaceInventorySchema = mongoose.Schema({
     price: Number,
     mileage: String,
     color:String
+}, {
+    versionKey:false
 });
 
-const MarketplaceInventory = mongoose.model('MarketplaceInventory', marketplaceInventorySchema);
+const MarketplaceInventory = mongoose.model('marketplaceInventory', marketplaceInventorySchema);
 
 module.exports = { MarketplaceInventory };

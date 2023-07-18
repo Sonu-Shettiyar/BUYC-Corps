@@ -1,12 +1,12 @@
 const express = require('express');
 const inventoryRouter = express.Router();
-const { MarketplaceInventory } = require("./marketplaceInventory.route.js");
 const { auth } = require('../middlewares/auth.middleware.js');
+const { MarketplaceInventory } = require('../models/marketplaceInventory.model.js');
 inventoryRouter.use(express.json());
 inventoryRouter.use(auth);
 
 
-inventoryRouter.get('/inventory', async (req, res) => {
+inventoryRouter.get('/', async (req, res) => {
     try {
         const allInventoryData = await MarketplaceInventory.find();
         res.status(200).json(allInventoryData);
@@ -15,14 +15,14 @@ inventoryRouter.get('/inventory', async (req, res) => {
     }
 });
 
-inventoryRouter.get('/inventory/:id', async (req, res) => {
+inventoryRouter.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const data = await MarketplaceInventory.findById(id);
         if (data) {
             res.status(200).json({data:data});
         } else {
-            res.status(404).json({ error: 'Data not found' });
+            res.status(404).json({ error: '404 Not found' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -30,7 +30,7 @@ inventoryRouter.get('/inventory/:id', async (req, res) => {
 }
 );
 
-inventoryRouter.post('/inventory', async (req, res) => {
+inventoryRouter.post('/', async (req, res) => {
     try {
         const newInventory = new MarketplaceInventory({ ...req.body });
         await newInventory.save();
@@ -41,7 +41,7 @@ inventoryRouter.post('/inventory', async (req, res) => {
 }
 );
 
-inventoryRouter.patch('/inventory/:id', async (req, res) => {
+inventoryRouter.patch('/:id', async (req, res) => {
     const { id } = req.params;
     const payload = req.body;
     try {
@@ -58,7 +58,7 @@ inventoryRouter.patch('/inventory/:id', async (req, res) => {
 );
 
 
-inventoryRouter.delete('/inventory/:id', async (req, res) => {
+inventoryRouter.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
