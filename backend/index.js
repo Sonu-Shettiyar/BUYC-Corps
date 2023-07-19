@@ -6,7 +6,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 app.use("/inventory", inventoryRouter);
-app.use("/oem", oemSpecsRouter);
+app.use("/oem_specs", oemSpecsRouter);
 app.use("/users", UserRouter);
 require("dotenv").config();
 app.use(express.json())
