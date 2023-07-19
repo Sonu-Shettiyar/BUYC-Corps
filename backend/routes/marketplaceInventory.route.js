@@ -4,6 +4,8 @@ const { auth } = require('../middlewares/auth.middleware.js');
 const { MarketplaceInventory } = require('../models/marketplaceInventory.model.js');
 inventoryRouter.use(express.json());
 inventoryRouter.use(auth);
+const cors = require("cors");
+inventoryRouter.use(cors());
 
 
 inventoryRouter.get('/', async (req, res) => {

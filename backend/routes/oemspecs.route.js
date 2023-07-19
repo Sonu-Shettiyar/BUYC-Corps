@@ -1,7 +1,8 @@
 const express = require("express");
 const { OEMSpecsModel } = require("../models/oem.model");
 const oemSpecsRouter = express.Router();
-
+const cors = require("cors");
+oemSpecsRouter.use(cors());
 oemSpecsRouter.get("/", async (req, res) => {
     try {
         const OEMSpecs = await OEMSpecsModel.find();
