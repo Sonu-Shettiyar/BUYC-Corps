@@ -1,13 +1,15 @@
 import { Box, Button, Center, Flex, Heading, Input } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProducts, getOEMSpecsData } from '../redux/productReducer/action';
+import { addProducts, getOEMSpecsData, updateProduct } from '../redux/productReducer/action';
 import OEMCard from './OEMCard';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
 
-  const { data, OEMData, forUpdate } = useSelector((store) => store.carReducer);
+  const { data, OEMData, forUpdate, forEdit } = useSelector((store) => store.carReducer);
+  const { isAuth } = useSelector((store) => store.authReducer);
+
   const { user } = useSelector((store) => store.authReducer);
   const [tableOEMData, setTableOemData] = useState(OEMData || []);
   const [specs, setSpecs] = useState({});
@@ -63,6 +65,40 @@ const AddProduct = () => {
     }
 
   }
+  const handleUpdate = () => {
+    if (specs) {
+
+      const payload = {
+        ...specs,
+        title,
+        image,
+        dealerId: user?._id,
+        dealerName: user.firstName,
+        KMsOnOdometer,
+        majorScratches,
+        originalPaint,
+        accidentsReported,
+        previousBuyers,
+        registrationPlace,
+        price,
+        color,
+        description,
+      }
+      dispatch(updateProduct(forUpdate?._id,payload))
+      console.log(forUpdate._id, "id")
+      console.log(forUpdate)
+      alert("Updated Succesfully...")
+      navigate("/")
+    } else {
+      alert("Please Select OEM")
+    }
+
+    
+  }
+
+  if (!isAuth) {
+    return <Navigate to={"/login"} />
+  }
 
   useEffect(() => {
     dispatch(getOEMSpecsData)
@@ -86,6 +122,9 @@ const AddProduct = () => {
           <tbody>
             {
               tableOEMData?.map((ele) => <OEMCard key={ele._id} {...ele} specs={specs} storeOEMSpecs={storeOEMSpecs} />)
+            }
+            {
+              tableOEMData.length == 0 && <Center><Heading>Loading....</Heading></Center>
             }
           </tbody>
         </table>
@@ -125,7 +164,7 @@ const AddProduct = () => {
           <Input type="text" value={registrationPlace} onChange={(e) => setregistrationPlace(e.target.value)} placeholder='Registration Place' required />
           <br />
           <br />
-          <Button onClick={handleSubmit}>ADD TO MARKETPLACE</Button>
+          <Button onClick={forEdit ? handleUpdate : handleSubmit}>{forEdit ? "UPDATE DEAL" : "ADD TO MARKETPLACE"}</Button>
         </form>
       </Box>
       <Box id="preview">

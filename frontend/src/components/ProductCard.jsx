@@ -137,7 +137,7 @@ function ProductCard({
                     </Stack>
 
                     {
-                        user._id == dealerId &&
+                        user._id&&user._id === dealerId &&
                         (<Stack
                             width={'100%'}
                             mt={'2rem'}

@@ -72,7 +72,8 @@ inventoryRouter.delete('/:id', async (req, res) => {
 
     try {
         const inventory = await MarketplaceInventory.findByIdAndDelete(id);
-        res.status(200).json({ msg: 'Deleted successfully' });
+        
+        res.status(200).json({ msg: 'Deleted successfully',inventory });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

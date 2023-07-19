@@ -6,6 +6,7 @@ import Dashboard from './Dashboard'
 import Home from './Home'
 import { Box } from '@chakra-ui/react'
 import AddProduct from './AddProduct'
+import PrivateRoute from './PrivateRoute'
 
 const Allroutes = () => {
   return (
@@ -15,7 +16,9 @@ const Allroutes = () => {
         <Route path="/login" element={<Signin />}></Route>
         <Route path='/' element={<Home />}></Route>
         <Route path='/dashboard' element={<Dashboard />}></Route>
-        <Route path='/sellCar' element={<AddProduct />}></Route>
+        <Route path='/sellCar' element={
+            <AddProduct />
+        }></Route>
       </Routes>
     </Box>
   )
