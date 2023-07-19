@@ -3,8 +3,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { UserModel } = require("../models/users.model");
 const UserRouter = express.Router();
+const cors = require("cors");
 require("dotenv").config();
 UserRouter.use(express.json())
+
+UserRouter.use(cors())
 
 UserRouter.post("/register", async (req, res) => {
     const { email, password } = req.body
@@ -39,9 +42,9 @@ UserRouter.post("/login", async (req, res) => {
     const user = await UserModel.findOne({ email });
     try {
         if (user) {
-            
+
             bcrypt.compare(password, user.password, async (error, result) => {
-                
+
                 if (error) {
                     res.status(400).json({ error: error.message })
                 } else {
@@ -52,7 +55,7 @@ UserRouter.post("/login", async (req, res) => {
                         const refreshTtoken = jwt.sign({ userId: user._id, userName: user.name }, process.env.Refresh_secret_key, {
                             expiresIn: "10d"
                         });
-                        res.status(200).json({ "msg": "login successfull", token, refreshTtoken });
+                        res.status(200).json({ "msg": "login successfull", data: user, token, refreshTtoken });
                     } else {
                         res.status(200).json({ "msg": "Wrong Credentials !!" })
                     }
