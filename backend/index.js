@@ -1,14 +1,16 @@
-const express = require("express");
-const { connection } = require("./db.js");
-const { UserRouter } = require("./routes/users.routes");
-const app = express();
-app.use(express.json())
-const cors = require("cors");
 const { inventoryRouter } = require("./routes/marketplaceInventory.route.js");
-app.use(cors())
-require("dotenv").config();
-app.use("/users", UserRouter);
+const { oemSpecsRouter } = require("./routes/oemspecs.route.js");
+const { UserRouter } = require("./routes/users.routes");
+const { connection } = require("./db.js");
+const express = require("express");
+const cors = require("cors");
+const app = express();
 app.use("/inventory", inventoryRouter);
+app.use("/oem", oemSpecsRouter);
+app.use("/users", UserRouter);
+require("dotenv").config();
+app.use(express.json())
+app.use(cors())
 
 
 app.listen(process.env.Port, async () => {

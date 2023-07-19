@@ -13,8 +13,15 @@ const marketplaceInventorySchema = mongoose.Schema({
     dealerName: String,
     description: [String],
     price: Number,
-    mileage: String,
-    color:String
+    color: String,
+    Model: String,
+    Year: Number,
+    List_Price: Number,
+    Colors: [String],
+    Mileage: Number,
+    Power: Number,
+    Max_Speed: Number,
+    imageUrl: String
 }, {
     versionKey:false
 });
