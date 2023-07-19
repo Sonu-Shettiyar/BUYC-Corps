@@ -7,16 +7,20 @@ const cors = require("cors");
 inventoryRouter.use(cors());
 
 inventoryRouter.get('/', async (req, res) => {
-    const { sort } = req.query;
+    const { sort, search } = req.query;
     let query = {};
     let sortValue;
-    if (sort == "asc") {
+    if (sort === "asc") {
         sortValue = { price: 1 };
-    } else if (sort == "desc") {
+    } else if (sort === "desc") {
         sortValue = { price: -1 };
     }
+    
+    if (search) {
+        query.Model = { $regex: search, $options: 'i' };
+    }
     try {
-        const allInventoryData = await MarketplaceInventory.find().sort(sortValue);
+        const allInventoryData = await MarketplaceInventory.find(query).sort(sortValue);
         res.status(200).json(allInventoryData);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -72,8 +76,8 @@ inventoryRouter.delete('/:id', async (req, res) => {
 
     try {
         const inventory = await MarketplaceInventory.findByIdAndDelete(id);
-        
-        res.status(200).json({ msg: 'Deleted successfully',inventory });
+
+        res.status(200).json({ msg: 'Deleted successfully', inventory });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
