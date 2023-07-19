@@ -1,0 +1,11 @@
+
+#navbar {
+    border: 2px solid red;
+    padding: 0px 30px;
+    background-color: white;
+}
+#navbar img{
+    background-color: red;
+    border-radius: 100px;
+ 
+}
