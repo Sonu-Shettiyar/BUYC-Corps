@@ -4,7 +4,7 @@ const oemSpecsSChema = new mongoose.Schema({
     Model: String,
     Year: Number,
     List_Price: Number,
-    // Colors: [String],
+    Colors: [String],
     Mileage: Number,
     Power: Number,
     Max_Speed: Number,

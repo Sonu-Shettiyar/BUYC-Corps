@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 
 const marketplaceInventorySchema = mongoose.Schema({
+    _id: String,
     title: String,
     image: String,
     KMsOnOdometer: Number,
-    majorScratches: Boolean,
-    originalPaint: Boolean,
+    majorScratches: String,
+    originalPaint: String,
     accidentsReported: Number,
     previousBuyers: Number,
     registrationPlace: String,
@@ -23,7 +24,7 @@ const marketplaceInventorySchema = mongoose.Schema({
     Max_Speed: Number,
     imageUrl: String
 }, {
-    versionKey:false
+    versionKey: false
 });
 
 const MarketplaceInventory = mongoose.model('marketplaceInventory', marketplaceInventorySchema);
