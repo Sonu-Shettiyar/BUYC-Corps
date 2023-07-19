@@ -3,26 +3,28 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProducts, getOEMSpecsData } from '../redux/productReducer/action';
 import OEMCard from './OEMCard';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
 
-  const { data, OEMData } = useSelector((store) => store.carReducer);
+  const { data, OEMData, forUpdate } = useSelector((store) => store.carReducer);
   const { user } = useSelector((store) => store.authReducer);
   const [tableOEMData, setTableOemData] = useState(OEMData || []);
   const [specs, setSpecs] = useState({});
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-  const [KMsOnOdometer, setKMsOnOdometer] = useState(0);
-  const [majorScratches, setmajorScratches] = useState("");
-  const [originalPaint, setoriginalPaint] = useState("");
-  const [accidentsReported, setaccidentsReported] = useState(0);
-  const [previousBuyers, setpreviousBuyers] = useState(0);
-  const [registrationPlace, setregistrationPlace] = useState("");
-  const [price, setprice] = useState(0);
-  const [color, setColor] = useState("");
-  const [description, setDescription] = useState([]);
+  const [title, setTitle] = useState(forUpdate.title || "");
+  const [image, setImage] = useState(forUpdate.image || "");
+  const [KMsOnOdometer, setKMsOnOdometer] = useState(forUpdate.KMsOnOdometer || 0);
+  const [majorScratches, setmajorScratches] = useState(forUpdate.majorScratches || "");
+  const [originalPaint, setoriginalPaint] = useState(forUpdate.originalPaint || "");
+  const [accidentsReported, setaccidentsReported] = useState(forUpdate.accidentsReported || 0);
+  const [previousBuyers, setpreviousBuyers] = useState(forUpdate.previousBuyers || 0);
+  const [registrationPlace, setregistrationPlace] = useState(forUpdate.registrationPlace || "");
+  const [price, setprice] = useState(forUpdate.price || 0);
+  const [color, setColor] = useState(forUpdate.color || "");
+  const [description, setDescription] = useState(forUpdate.description || []);
   const [bulletPoint, setBulletPoint] = useState("");
+  const navigate = useNavigate();
 
   const addDescription = () => {
     let newArr = [...description];
@@ -37,7 +39,7 @@ const AddProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (specs) {
-  
+
       const payload = {
         ...specs,
         title,
@@ -55,9 +57,10 @@ const AddProduct = () => {
         description,
       }
       dispatch(addProducts(payload))
+      navigate("/")
     } else {
       alert("Please Select OEM")
-}
+    }
 
   }
 
@@ -95,7 +98,7 @@ const AddProduct = () => {
           <br /><br />
           <Input type="number" value={KMsOnOdometer} onChange={(e) => setKMsOnOdometer(e.target.value)} placeholder='Kilometers as per Odometer' required />
           <br /><br />
-          <select name="scrath" id="scratch" value={majorScratches} onChange={(e)=>setmajorScratches(e.target.value)} required>
+          <select name="scrath" id="scratch" value={majorScratches} onChange={(e) => setmajorScratches(e.target.value)} required>
             <option value="">Major Scratches</option>
             <option value="No">NO</option>
             <option value="Yes">YES</option>
@@ -110,7 +113,7 @@ const AddProduct = () => {
           <Input type="text" value={originalPaint} onChange={(e) => setoriginalPaint(e.target.value)} placeholder='Original Paint' required />
           <br />
           <br />
-          <Input placeholder='Selling Price' type='number' value={price} onChange={(e)=>setprice(e.target.value)}></Input>
+          <Input placeholder='Selling Price' type='number' value={price} onChange={(e) => setprice(e.target.value)}></Input>
           <br />
           <br />
           <Input type="number" value={accidentsReported} onChange={(e) => setaccidentsReported(e.target.value)} placeholder='Number of accident reported' required />
@@ -130,16 +133,16 @@ const AddProduct = () => {
         <br />
         <hr style={{ border: "2px dashed gray" }} />
         <br />
-        
+
         <h1>Title: {title}</h1> <br />
-        <h1>Kilometers: { KMsOnOdometer}</h1> <br />
+        <h1>Kilometers: {KMsOnOdometer}</h1> <br />
         <h3>Description:</h3>
-       <div style={{marginLeft:"20px"}}> <ul>
-        {
-          description?.map((el) => {
-            return <li key={el}>{el}</li>
-          })
-        }
+        <div style={{ marginLeft: "20px" }}> <ul>
+          {
+            description?.map((el) => {
+              return <li key={el}>{el}</li>
+            })
+          }
         </ul></div>
         <br />
         <h1>Major Scratches: {majorScratches}</h1> <br />
@@ -147,7 +150,7 @@ const AddProduct = () => {
         <h1>No. of Accident Reported: {accidentsReported}</h1> <br />
         <h1>Previous Owner: {previousBuyers}</h1> <br />
         <h1>Registration Place: {registrationPlace}</h1> <br />
-        
+
 
 
       </Box>

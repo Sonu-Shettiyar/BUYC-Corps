@@ -56,7 +56,7 @@ function Navbar() {
     const dispatch = useDispatch();
     return (
         <>
-            <Box bg={useColorModeValue('blue.100', 'gray.900')} px={4}>
+            <Box position={"sticky"} zIndex={999} mt={0} p={0}  bg={useColorModeValue('blue.100', 'gray.900')} px={4}>
                 <Flex pl={6} h={20} pr={6} alignItems={'center'} justifyContent={'space-between'}>
                     <Flex gap={5}  >
                         <img src='https://png.pngtree.com/png-clipart/20210606/original/pngtree-sport-car-logo-vector-png-image_6398339.jpg' style={{ borderRadius: "100px", boxShadow: "2px 3px" }} width={"60px"} />

@@ -52,3 +52,7 @@ td,th{
     border: 2px solid rgba(133, 128, 128, 0.258);
     padding: 4px;
 }
+
+#grid{
+    grid-template-columns: repeat(2,1fr);
+}

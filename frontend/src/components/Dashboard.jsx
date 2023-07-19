@@ -15,17 +15,15 @@ const Dashboard = () => {
     dispatch(getAllCars);
   }, [])
   return (
-    <Box>
+    <Box display={"grid"} id='grid'>
       {/* <AddProduct /> */}
 
-      <SimpleGrid columns={2} minChildWidth='120px' spacing='10px'>
         
       {
         data?.map((el, ind) => {
           return <ProductCard key={ind} {...el} />
         })
         }
-      </SimpleGrid>
         
     </Box>
 

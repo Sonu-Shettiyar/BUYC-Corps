@@ -13,7 +13,7 @@ import {
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Modal,
     ModalOverlay,
@@ -22,7 +22,10 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-  } from '@chakra-ui/react'
+} from '@chakra-ui/react'
+import { deleteProduct } from '../redux/productReducer/action';
+import { UPDATE_PRODUCT } from '../redux/actionTypes';
+import { useNavigate } from 'react-router-dom';
 function ProductCard({
     title,
     image,
@@ -39,11 +42,12 @@ function ProductCard({
     description,
     Model,
     Max_Speed,
-    Mileage
+    Mileage,
+    _id,...rest
 }) {
 
     const { user } = useSelector((store) => store.authReducer);
-    const props=  {
+    const props = {
         title,
         image,
         dealerId,
@@ -59,7 +63,17 @@ function ProductCard({
         description,
         Model,
         Max_Speed,
-        Mileage
+        Mileage,
+        ...rest
+    }
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleDelete = (id) => {
+        dispatch(deleteProduct(id))
+    }
+    const handleUpdate = () => {
+        dispatch({ type: UPDATE_PRODUCT, payload: props })
+        navigate("/sellCar");
     }
 
     return (
@@ -92,7 +106,7 @@ function ProductCard({
                     </Heading>
                     <Text fontWeight={600} color={'gray.500'} size="sm" >
                         {Model} </Text>
-                    {description.map((el,ind)=><Text
+                    {description.map((el, ind) => <Text
                         textAlign={'end'}
                         key={ind}
                         color={useColorModeValue('gray.700', 'gray.400')}
@@ -123,45 +137,48 @@ function ProductCard({
                     </Stack>
 
                     {
-                        !user._id == dealerId?
+                        user._id == dealerId &&
                         (<Stack
-                        width={'100%'}
-                        mt={'2rem'}
-                        direction={'row'}
-                        padding={2}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}>
-                        <Button
-                            flex={1}
-                            fontSize={'sm'}
-                            rounded={'full'}
-                            _focus={{
-                                bg: 'gray.200',
-                            }}>
-                            EDIT
-                        </Button>
-                        <Button
-                            flex={1}
-                            fontSize={'sm'}
-                            rounded={'full'}
-                            bg={'blue.400'}
-                            color={'white'}
-                            boxShadow={
-                                '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-                            }
-                            _hover={{
-                                bg: 'blue.500',
-                            }}
-                            _focus={{
-                                bg: 'blue.500',
-                            }}>
-                            DELETE
-                        </Button>
-                            </Stack>) : (
-                                <BasicUsage {...props} />
-)
-                    }
-                    
+                            width={'100%'}
+                            mt={'2rem'}
+                            direction={'row'}
+                            padding={2}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}>
+                            <Button
+                                onClick={handleUpdate}
+                                flex={1}
+                                fontSize={'sm'}
+                                rounded={'full'}
+                                _focus={{
+                                    bg: 'gray.200',
+                                }}>
+                                EDIT
+                            </Button>
+                            <Button
+                                onClick={() => handleDelete(_id)}
+                                flex={1}
+                                fontSize={'sm'}
+                                rounded={'full'}
+                                bg={'blue.400'}
+                                color={'white'}
+                                boxShadow={
+                                    '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
+                                }
+                                _hover={{
+                                    bg: 'blue.500',
+                                }}
+                                _focus={{
+                                    bg: 'blue.500',
+                                }}>
+                                DELETE
+                            </Button>
+                        </Stack>)}
+
+                    (
+                    <BasicUsage {...props} />
+                    )
+
                 </Stack>
             </Stack>
         </Center>
@@ -188,52 +205,52 @@ function BasicUsage({
 }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
-      <>
-        <Button onClick={onOpen} w={"90%"} bg={"#89cfd8ab"}>SEE MORE DETAILS</Button>
-  
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader></ModalHeader>
-            <ModalCloseButton />
+        <>
+            <Button onClick={onOpen} w={"90%"} bg={"#89cfd8ab"}>SEE MORE DETAILS</Button>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader></ModalHeader>
+                    <ModalCloseButton />
                     <ModalBody>
 
                         <Box id="preview">
-        {<Center><img src={image} width={"80%"}></img></Center>}
-        <br />
-        <hr style={{ border: "2px dashed gray" }} />
-        <br />
-        
-        <h1>Title: {title}</h1> <br />
-        <h1>Kilometers: { KMsOnOdometer}</h1> <br />
-        <h3>Description:</h3>
-       <div style={{marginLeft:"20px"}}> <ul>
-        {
-          description?.map((el) => {
-            return <li key={el}>{el}</li>
-          })
-        }
-        </ul></div>
-        <br />
-        <h1>Major Scratches: {majorScratches}</h1> <br />
-        <h1>Original Paint: {originalPaint}</h1> <br />
-        <h1>No. of Accident Reported: {accidentsReported}</h1> <br />
-        <h1>Previous Owner: {previousBuyers}</h1> <br />
-        <h1>Registration Place: {registrationPlace}</h1> <br />
-        
+                            {<Center><img src={image} width={"80%"}></img></Center>}
+                            <br />
+                            <hr style={{ border: "2px dashed gray" }} />
+                            <br />
+
+                            <h1>Title: {title}</h1> <br />
+                            <h1>Kilometers: {KMsOnOdometer}</h1> <br />
+                            <h3>Description:</h3>
+                            <div style={{ marginLeft: "20px" }}> <ul>
+                                {
+                                    description?.map((el) => {
+                                        return <li key={el}>{el}</li>
+                                    })
+                                }
+                            </ul></div>
+                            <br />
+                            <h1>Major Scratches: {majorScratches}</h1> <br />
+                            <h1>Original Paint: {originalPaint}</h1> <br />
+                            <h1>No. of Accident Reported: {accidentsReported}</h1> <br />
+                            <h1>Previous Owner: {previousBuyers}</h1> <br />
+                            <h1>Registration Place: {registrationPlace}</h1> <br />
 
 
-      </Box>
-            </ModalBody>
-  
-            <ModalFooter>
-              <Button  mr={3} onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
+
+                        </Box>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
     )
-  }
+}
 export default ProductCard;

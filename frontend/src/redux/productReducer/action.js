@@ -12,6 +12,15 @@ export const getAllCars = (dispatch) => {
             dispatch({ type: PRODUCT_FETCHING_FAILED })
         })
 }
+export const getAllCarsSorted = (val) => (dispatch) => {
+
+    axios.get(`${BASE_URL}?sort=${val}`)
+        .then((res) => {
+            dispatch({ type: GET_PRODUCT, payload: res.data })
+        }).catch((err) => {
+            dispatch({ type: PRODUCT_FETCHING_FAILED })
+        })
+}
 export const getSingleCar = (id) => (dispatch) => {
 
     axios.get(`${BASE_URL}/${id}`)
