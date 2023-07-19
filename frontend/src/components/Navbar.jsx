@@ -64,6 +64,7 @@ function Navbar() {
                             BuyCars
                         </Text>
                     </Flex>
+                    
 
                     <Flex alignItems={'center'}>
                         <Stack direction={'row'} spacing={7}>

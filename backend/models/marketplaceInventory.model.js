@@ -4,8 +4,8 @@ const marketplaceInventorySchema = mongoose.Schema({
     title: String,
     image: String,
     KMsOnOdometer: Number,
-    majorScratches: Boolean,
-    originalPaint: Boolean,
+    majorScratches: String,
+    originalPaint: String,
     accidentsReported: Number,
     previousBuyers: Number,
     registrationPlace: String,
@@ -14,6 +14,7 @@ const marketplaceInventorySchema = mongoose.Schema({
     description: [String],
     price: Number,
     color: String,
+    // --------------
     Model: String,
     Year: Number,
     List_Price: Number,

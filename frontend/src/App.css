@@ -1,11 +1,54 @@
-
 #navbar {
     border: 2px solid rgba(167, 167, 167, 0.176);
     padding: 0px 30px;
     background-color: white;
 }
-#navbar img{
-    background-color: red;
+
+#navbar img {
+    background-color: rgb(104, 100, 100);
     border-radius: 100px;
- 
+
+}
+
+#routes {
+    background-color: rgba(215, 231, 246, 0.74);
+}
+
+#add-form {
+    /* background-color: red;
+     */
+    background-color: white;
+    width: 400px;
+    margin: auto;
+    border-radius: 10px;
+
+    /* margin-top: 20px; */
+}
+
+#add-form input,
+#add-form select {
+    width: 100%;
+    border: 2px solid rgba(116, 124, 121, 0.08);
+    height: 40px;
+}
+
+
+
+#add-form form div button {
+    background-color: #BEE3F8;   
+}
+#add-form form button{
+    background-color: #BEE3F8;
+    width: 100%;
+}
+#preview {
+    border: 2px solid black;
+    padding: 15px;
+    padding-left: 20px;
+    margin: 10px;
+}
+
+td,th{
+    border: 2px solid rgba(133, 128, 128, 0.258);
+    padding: 4px;
 }
