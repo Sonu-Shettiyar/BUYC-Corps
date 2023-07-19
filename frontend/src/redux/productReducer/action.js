@@ -1,7 +1,7 @@
 import axios from "axios"
 import { GET_OEM_SPECS, GET_PRODUCT, PRODUCT_FETCHING_FAILED } from "../actionTypes"
 
-const BASE_URL = "http://localhost:4500/inventory"
+const BASE_URL = "https://buyatcars.onrender.com/inventory"
 
 export const getAllCars = (dispatch) => {
 
@@ -12,6 +12,15 @@ export const getAllCars = (dispatch) => {
         }).catch((err) => {
             dispatch({ type: PRODUCT_FETCHING_FAILED })
         })
+}
+export const getAllCarsSearch = (data) => (dispatch) => {
+    axios.get(`${BASE_URL}?search=${data}`)
+    .then((res) => {
+        console.log("called")
+        dispatch({ type: GET_PRODUCT, payload: res.data })
+    }).catch((err) => {
+        dispatch({ type: PRODUCT_FETCHING_FAILED })
+    })
 }
 export const getAllCarsSorted = (val) => (dispatch) => {
 
@@ -34,7 +43,7 @@ export const getSingleCar = (id) => (dispatch) => {
 
 export const addProducts = (data) => (dispatch) => {
 
-    axios.post(`${BASE_URL}`, data)
+   return axios.post(`https://buyatcars.onrender.com/inventory`, data)
         .then((res) => {
 
             alert(res.data.msg)
@@ -69,7 +78,7 @@ export const updateProduct = (id, payload) => (dispatch) => {
         }).catch((err) => dispatch({ type: PRODUCT_FETCHING_FAILED }))
 }
 export const getOEMSpecsData = (dispatch) => {
-    axios.get(`http://localhost:4500/oem_specs`)
+    axios.get(`https://buyatcars.onrender.com/oem_specs`)
         .then((res) => {
             dispatch({ type: GET_OEM_SPECS, payload: res.data.data })
         }).catch((err) => dispatch({ type: PRODUCT_FETCHING_FAILED }))

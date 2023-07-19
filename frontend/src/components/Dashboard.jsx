@@ -15,10 +15,7 @@ const Dashboard = () => {
     dispatch(getAllCars);
   }, [])
   return (
-    <Box display={"grid"} id='grid'>
-      {/* <AddProduct /> */}
-
-        
+    <Box display={"grid"} id='grid'>        
       {
         data?.map((el, ind) => {
           return <ProductCard key={ind} {...el} />

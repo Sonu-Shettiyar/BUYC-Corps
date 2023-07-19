@@ -58,8 +58,10 @@ const AddProduct = () => {
         color,
         description,
       }
-      dispatch(addProducts(payload))
-      navigate("/")
+      dispatch(addProducts(payload)).then(() => {
+
+        navigate("/")
+      }).catch((err) => alert(err.message))
     } else {
       alert("Please Select OEM")
     }
@@ -84,16 +86,14 @@ const AddProduct = () => {
         color,
         description,
       }
-      dispatch(updateProduct(forUpdate?._id,payload))
-      console.log(forUpdate._id, "id")
-      console.log(forUpdate)
+      dispatch(updateProduct(forUpdate?._id && forUpdate?.dealerId, payload))
       alert("Updated Succesfully...")
       navigate("/")
     } else {
       alert("Please Select OEM")
     }
 
-    
+
   }
 
   if (!isAuth) {
@@ -124,7 +124,7 @@ const AddProduct = () => {
               tableOEMData?.map((ele) => <OEMCard key={ele._id} {...ele} specs={specs} storeOEMSpecs={storeOEMSpecs} />)
             }
             {
-              tableOEMData.length == 0 && <Center><Heading>Loading....</Heading></Center>
+              tableOEMData.length == 0 && <Heading>Loading....</Heading>
             }
           </tbody>
         </table>
