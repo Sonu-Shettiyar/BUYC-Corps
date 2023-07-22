@@ -1,19 +1,5 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-// const Navbar = () => {
-
-//     const user = useSelector((store) => store.authReducer.user);
-//     console.log(user)
-//     return (
-//         <Flex id='navbar' justify={"space-between"} align={"center"}>
-
-
-//             <Box>
-//                 <Button>Sign In</Button>
-//             </Box>
-//         </Flex>
-//     )
-// }
 import {
     Box,
     Flex,
@@ -35,35 +21,24 @@ import { Link } from "react-router-dom";
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { logoutHandler } from '../redux/authReducer/action';
 
-const NavLink = ({ children }) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'none',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        href={'#'}>
-        {children}
-    </Link>
-);
+
 
 function Navbar() {
     const { colorMode, toggleColorMode } = useColorMode();
-    const { isOpen, onOpen, onClose } = useDisclosure();
     const { user, isAuth } = useSelector((store) => store.authReducer);
     const dispatch = useDispatch();
     return (
         <>
             <Box position={"sticky"} zIndex={999} mt={0} p={0}  bg={useColorModeValue('blue.100', 'gray.900')} px={4}>
                 <Flex pl={6} h={20} pr={6} alignItems={'center'} justifyContent={'space-between'}>
+                    <Link to={"/"}>
                     <Flex gap={5}  >
                         <img src='https://png.pngtree.com/png-clipart/20210606/original/pngtree-sport-car-logo-vector-png-image_6398339.jpg' style={{ borderRadius: "100px", boxShadow: "2px 3px" }} width={"60px"} />
                         <Text mt={3} fontSize="2xl" fontFamily="monospace" fontWeight="bold">
                             BuyCars
                         </Text>
                     </Flex>
+                    </Link>
                     
 
                     <Flex alignItems={'center'}>

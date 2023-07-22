@@ -1,28 +1,29 @@
 import axios from "axios"
-import { GET_OEM_SPECS, GET_PRODUCT, PRODUCT_FETCHING_FAILED } from "../actionTypes"
+import { GET_OEM_SPECS, GET_PRODUCT, PRODUCT_FETCHING_FAILED, PRODUCT_LOADING, UPDATE_PRODUCT } from "../actionTypes"
 
 const BASE_URL = "https://buyatcars.onrender.com/inventory"
 
 export const getAllCars = (dispatch) => {
-
+    dispatch({ type: PRODUCT_LOADING })
     axios.get(`${BASE_URL}`)
         .then((res) => {
-            console.log("called")
             dispatch({ type: GET_PRODUCT, payload: res.data })
         }).catch((err) => {
             dispatch({ type: PRODUCT_FETCHING_FAILED })
         })
 }
 export const getAllCarsSearch = (data) => (dispatch) => {
+    dispatch({ type: PRODUCT_LOADING })
+
     axios.get(`${BASE_URL}?search=${data}`)
-    .then((res) => {
-        console.log("called")
-        dispatch({ type: GET_PRODUCT, payload: res.data })
-    }).catch((err) => {
-        dispatch({ type: PRODUCT_FETCHING_FAILED })
-    })
+        .then((res) => {
+            dispatch({ type: GET_PRODUCT, payload: res.data })
+        }).catch((err) => {
+            dispatch({ type: PRODUCT_FETCHING_FAILED })
+        })
 }
 export const getAllCarsSorted = (val) => (dispatch) => {
+    dispatch({ type: PRODUCT_LOADING })
 
     axios.get(`${BASE_URL}?sort=${val}`)
         .then((res) => {
@@ -32,18 +33,20 @@ export const getAllCarsSorted = (val) => (dispatch) => {
         })
 }
 export const getSingleCar = (id) => (dispatch) => {
+    dispatch({ type: PRODUCT_LOADING })
 
     axios.get(`${BASE_URL}/${id}`)
         .then((res) => {
-            dispatch({ type: GET_PRODUCT, payload: res.data })
+            dispatch({ type: UPDATE_PRODUCT, payload: res.data.data })
         }).catch((err) => {
             dispatch({ type: PRODUCT_FETCHING_FAILED })
         })
 }
 
 export const addProducts = (data) => (dispatch) => {
+    dispatch({ type: PRODUCT_LOADING })
 
-   return axios.post(`https://buyatcars.onrender.com/inventory`, data)
+    return axios.post(`${BASE_URL}`, data)
         .then((res) => {
 
             alert(res.data.msg)
@@ -55,6 +58,8 @@ export const addProducts = (data) => (dispatch) => {
 }
 
 export const deleteProduct = (id) => (dispatch) => {
+    dispatch({ type: PRODUCT_LOADING })
+
     axios.delete(`${BASE_URL}/${id}`)
         .then((res) => {
             if (!res.data.inventory) {
@@ -67,6 +72,7 @@ export const deleteProduct = (id) => (dispatch) => {
 }
 
 export const updateProduct = (id, payload) => (dispatch) => {
+    dispatch({ type: PRODUCT_LOADING })
 
     axios.patch(`${BASE_URL}/${id}`, payload)
         .then((res) => {
@@ -78,6 +84,8 @@ export const updateProduct = (id, payload) => (dispatch) => {
         }).catch((err) => dispatch({ type: PRODUCT_FETCHING_FAILED }))
 }
 export const getOEMSpecsData = (dispatch) => {
+    dispatch({ type: PRODUCT_LOADING })
+
     axios.get(`https://buyatcars.onrender.com/oem_specs`)
         .then((res) => {
             dispatch({ type: GET_OEM_SPECS, payload: res.data.data })
