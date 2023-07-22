@@ -4,43 +4,44 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addProducts, getOEMSpecsData, updateProduct } from '../redux/productReducer/action';
 import OEMCard from './OEMCard';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Navbar from './Navbar'
 
 const AddProduct = () => {
 
   const { data, OEMData, forUpdate, forEdit } = useSelector((store) => store.carReducer);
   const { isAuth } = useSelector((store) => store.authReducer);
-
   const { user } = useSelector((store) => store.authReducer);
   const [tableOEMData, setTableOemData] = useState(OEMData || []);
   const [specs, setSpecs] = useState({});
   const dispatch = useDispatch();
-  const [title, setTitle] = useState(forUpdate.title || "");
-  const [image, setImage] = useState(forUpdate.image || "");
-  const [KMsOnOdometer, setKMsOnOdometer] = useState(forUpdate.KMsOnOdometer || 0);
-  const [majorScratches, setmajorScratches] = useState(forUpdate.majorScratches || "");
-  const [originalPaint, setoriginalPaint] = useState(forUpdate.originalPaint || "");
-  const [accidentsReported, setaccidentsReported] = useState(forUpdate.accidentsReported || 0);
-  const [previousBuyers, setpreviousBuyers] = useState(forUpdate.previousBuyers || 0);
-  const [registrationPlace, setregistrationPlace] = useState(forUpdate.registrationPlace || "");
-  const [price, setprice] = useState(forUpdate.price || 0);
-  const [color, setColor] = useState(forUpdate.color || "");
-  const [description, setDescription] = useState(forUpdate.description || []);
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [KMsOnOdometer, setKMsOnOdometer] = useState("");
+  const [majorScratches, setmajorScratches] = useState("");
+  const [originalPaint, setoriginalPaint] = useState("");
+  const [accidentsReported, setaccidentsReported] = useState("");
+  const [previousBuyers, setpreviousBuyers] = useState("");
+  const [registrationPlace, setregistrationPlace] = useState("");
+  const [price, setprice] = useState("");
+  const [color, setColor] = useState("");
+  const [description, setDescription] = useState([]);
   const [bulletPoint, setBulletPoint] = useState("");
   const navigate = useNavigate();
+  
 
   const addDescription = () => {
     let newArr = [...description];
     newArr.push(bulletPoint);
     setDescription(newArr);
+    setBulletPoint("")
   }
 
   const storeOEMSpecs = (payload) => {
     setSpecs(payload);
-    // console.log(payload)
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (specs) {
+    if (specs.Model) {
 
       const payload = {
         ...specs,
@@ -59,43 +60,14 @@ const AddProduct = () => {
         description,
       }
       dispatch(addProducts(payload)).then(() => {
-
-        navigate("/")
+        navigate("/");
       }).catch((err) => alert(err.message))
     } else {
       alert("Please Select OEM")
     }
 
   }
-  const handleUpdate = () => {
-    if (specs) {
-
-      const payload = {
-        ...specs,
-        title,
-        image,
-        dealerId: user?._id,
-        dealerName: user.firstName,
-        KMsOnOdometer,
-        majorScratches,
-        originalPaint,
-        accidentsReported,
-        previousBuyers,
-        registrationPlace,
-        price,
-        color,
-        description,
-      }
-      dispatch(updateProduct(forUpdate?._id && forUpdate?.dealerId, payload))
-      alert("Updated Succesfully...")
-      navigate("/")
-    } else {
-      alert("Please Select OEM")
-    }
-
-
-  }
-
+ 
   if (!isAuth) {
     return <Navigate to={"/login"} />
   }
@@ -106,7 +78,9 @@ const AddProduct = () => {
   }, [])
   return (
 
-    <Flex justify={"space-between"} ml={5} mr={5}>
+    <>
+      <Navbar />
+      <Flex justify={"space-between"} m={5}>
       <Box>
         <table>
           <thead>
@@ -123,11 +97,13 @@ const AddProduct = () => {
             {
               tableOEMData?.map((ele) => <OEMCard key={ele._id} {...ele} specs={specs} storeOEMSpecs={storeOEMSpecs} />)
             }
-            {
-              tableOEMData.length == 0 && <Heading>Loading....</Heading>
-            }
+            
           </tbody>
         </table>
+        {
+          tableOEMData.length == 0 && <Center><Heading>Loading....</Heading>
+          </Center>
+        }
       </Box>
       <Box border={"3px dashed #5dcd"} p={3} id='add-form'>
         <form onSubmit={handleSubmit}>
@@ -144,7 +120,7 @@ const AddProduct = () => {
           </select>
           <br />
           <br />
-          <Input type="text" value={bulletPoint} onChange={(e) => setBulletPoint(e.target.value)} placeholder='add description' required />
+          <Input type="text" value={bulletPoint} onChange={(e) => setBulletPoint(e.target.value)} placeholder='add description' />
           <br />
           <Button onClick={addDescription}>➕</Button>
           <br />
@@ -164,11 +140,11 @@ const AddProduct = () => {
           <Input type="text" value={registrationPlace} onChange={(e) => setregistrationPlace(e.target.value)} placeholder='Registration Place' required />
           <br />
           <br />
-          <Button onClick={forEdit ? handleUpdate : handleSubmit}>{forEdit ? "UPDATE DEAL" : "ADD TO MARKETPLACE"}</Button>
+          <button style={{padding:"10px",borderRadius:"12px"}} type="submit">{"ADD TO MARKETPLACE"}</button>
         </form>
       </Box>
       <Box id="preview">
-        {image ? <img src={image} alt="PREVIEW" width={"100px"} /> : <Center><img src='https://placehold.co/300x300?text=Car+Preview' width={"50%"}></img></Center>}
+        {image ? <Center><img src={image} alt="PREVIEW" width={"300px"} /> </Center>: <Center><img src='https://placehold.co/300x300?text=Car+Preview' width={"50%"}></img></Center>}
         <br />
         <hr style={{ border: "2px dashed gray" }} />
         <br />
@@ -194,6 +170,7 @@ const AddProduct = () => {
 
       </Box>
     </Flex>
+    </>
 
   )
 }

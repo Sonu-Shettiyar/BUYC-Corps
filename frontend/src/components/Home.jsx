@@ -4,8 +4,7 @@ import { Box, Button, Flex, Input } from '@chakra-ui/react'
 import Dashboard from './Dashboard'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { GET_PRODUCT } from '../redux/actionTypes'
-import { getAllCars, getAllCarsSearch, getAllCarsSorted } from '../redux/productReducer/action'
+import {  getAllCarsSearch, getAllCarsSorted } from '../redux/productReducer/action'
 const Home = () => {
 
     const dispatch = useDispatch();

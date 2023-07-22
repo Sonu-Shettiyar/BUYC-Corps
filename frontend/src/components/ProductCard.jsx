@@ -26,6 +26,7 @@ import {
 import { deleteProduct } from '../redux/productReducer/action';
 import { UPDATE_PRODUCT } from '../redux/actionTypes';
 import { useNavigate } from 'react-router-dom';
+import UpdateModal from './UpdateModal';
 function ProductCard({
     title,
     image,
@@ -43,7 +44,8 @@ function ProductCard({
     Model,
     Max_Speed,
     Mileage,
-    _id,...rest
+    Colors,
+    _id, ...rest
 }) {
 
     const { user } = useSelector((store) => store.authReducer);
@@ -64,6 +66,7 @@ function ProductCard({
         Model,
         Max_Speed,
         Mileage,
+        Colors,
         ...rest
     }
     const dispatch = useDispatch();
@@ -71,18 +74,15 @@ function ProductCard({
     const handleDelete = (id) => {
         dispatch(deleteProduct(id))
     }
-    const handleUpdate = () => {
-        dispatch({ type: UPDATE_PRODUCT, payload: props })
-        navigate("/sellCar");
-    }
-
+  
+    
     return (
         <Center py={6}>
             <Stack
                 borderWidth="1px"
                 borderRadius="lg"
                 w={{ sm: '100%', md: '540px' }}
-                height={{ sm: '476px', md: '20rem' }}
+                height={{ sm: '400px', md: '100%' }}
                 direction={{ base: 'column', md: 'row' }}
                 bg={useColorModeValue('white', 'gray.900')}
                 boxShadow={'xl'}
@@ -98,35 +98,43 @@ function ProductCard({
                     flex={1}
                     flexDirection="column"
                     justifyContent="center"
-                    alignItems="center"
+                    // alignItems="center"
                     p={1}
                     pt={2}>
                     <Heading fontSize={'2xl'} fontFamily={'body'}>
                         {title}
                     </Heading>
+                    <Flex justify="space-between">
                     <Text fontWeight={600} color={'gray.500'} size="sm" >
-                        {Model} </Text>
-                    {description.map((el, ind) => <Text
-                        textAlign={'end'}
-                        key={ind}
-                        color={useColorModeValue('gray.700', 'gray.400')}
-                        px={3}>
-                        {el}
-                    </Text>)}
-                    <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
+                            {Model} </Text>
+                        <Box>
+                           {
+                            Colors?.map((el,ind)=>( <Badge
+                                px={1}
+                                py={1}
+                                bg={el}
+                                key={ind}
+                              >{el}
+                            </Badge>))
+                           }
+                        </Box>
+                    </Flex>
+
+                    <Stack align={'center'} justify={'center'} direction={'row'} mt={2}>
                         <Badge
                             px={2}
                             py={1}
                             bg={useColorModeValue('gray.50', 'gray.800')}
                             fontWeight={'400'}>
-                            Price: {price}.00/-
+                            Price: {price} /-
                         </Badge>
                         <Badge
                             px={2}
                             py={1}
                             bg={useColorModeValue('gray.50', 'gray.800')}
                             fontWeight={'400'}>
-                            Speed: {Max_Speed}km/hr            </Badge>
+                            Speed: {Max_Speed} km/hr            </Badge>
+                            
                         <Badge
                             px={2}
                             py={1}
@@ -137,29 +145,20 @@ function ProductCard({
                     </Stack>
 
                     {
-                        user._id&&user._id === dealerId &&
+                        user._id && user._id === dealerId &&
                         (<Stack
-                            width={'100%'}
-                            mt={'2rem'}
+                            width={'90%'}
+                            mt={'1rem'}
                             direction={'row'}
-                            padding={2}
-                            justifyContent={'space-between'}
+                            justifyContent={'space-evenly'}
                             alignItems={'center'}>
-                            <Button
-                                onClick={handleUpdate}
-                                flex={1}
-                                fontSize={'sm'}
-                                rounded={'full'}
-                                _focus={{
-                                    bg: 'gray.200',
-                                }}>
-                                EDIT
-                            </Button>
+                           
+                            <UpdateModal id={_id} />
                             <Button
                                 onClick={() => handleDelete(_id)}
-                                flex={1}
+                                // flex={1}
+                                width={"50%"}
                                 fontSize={'sm'}
-                                rounded={'full'}
                                 bg={'blue.400'}
                                 color={'white'}
                                 boxShadow={

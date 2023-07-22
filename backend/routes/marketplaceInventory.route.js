@@ -7,18 +7,15 @@ const cors = require("cors");
 inventoryRouter.use(cors());
 
 inventoryRouter.get('/', async (req, res) => {
-    const { sort, search } = req.query;
+    const { sort, search, year, title } = req.query;
     let query = {};
     let sortValue;
-    if (sort === "asc") {
-        sortValue = { price: 1 };
-    } else if (sort === "desc") {
-        sortValue = { price: -1 };
-    }
-    
-    if (search) {
-        query.Model = { $regex: search, $options: 'i' };
-    }
+    if (year) { query.Year = year }
+    if (title) { query.title = { $regex: title, $options: 'i' } }
+    if (sort === "asc") { sortValue = { price: 1 } } else if (sort === "desc") { sortValue = { price: -1 } }
+    if (search) { query.Model = { $regex: search, $options: 'i' } }
+// console.log()
+
     try {
         const allInventoryData = await MarketplaceInventory.find(query).sort(sortValue);
         res.status(200).json(allInventoryData);
@@ -60,9 +57,9 @@ inventoryRouter.patch('/:id', async (req, res) => {
     try {
         const updatedInventory = await MarketplaceInventory.findByIdAndUpdate(id, payload);
         if (updatedInventory) {
-            res.status(200).json({ msg: "Updated successfully", data: updatedInventory });
+            res.status(200).json({ msg: "Updated successfully" });
         } else {
-            res.status(404).json({ error: error.message });
+            res.status(404).json({ error: "Data doesn't exit" });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });

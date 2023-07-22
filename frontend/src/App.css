@@ -54,5 +54,22 @@ td,th{
 }
 
 #grid{
-    grid-template-columns: repeat(2,1fr);
+    margin: 2px 5px 0 35px;
+
+    grid-template-columns: repeat(3,470px);
+    gap: 20px;
+}
+
+@media all and (min-width:800px) and (max-width:1000px){
+    #grid{
+        margin: 2px 5px 0 10px;
+        grid-template-columns: repeat(2,470px);
+    }
+}
+@media all and  (max-width:799px){
+    #grid{
+        margin: 2px 5px 0 5px;
+
+        grid-template-columns: repeat(2,300px);
+    }
 }

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const marketplaceInventorySchema = mongoose.Schema({
-    _id: String,
     title: String,
     image: String,
     KMsOnOdometer: Number,

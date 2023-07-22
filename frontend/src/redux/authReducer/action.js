@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AUTH_FAILURE, AUTH_LOADING, AUTH_SIGNOUT, AUTH_SUCCESS } from "../actionTypes";
-const BASE_URL = "https://buyatcars.onrender.com"
+// const BASE_URL = "https://buyatcars.onrender.com"
+const BASE_URL = "http://localhost:4500"
 
 export const signupHandler = (payload) => (dispatch) => {
     dispatch({ type: AUTH_LOADING })
