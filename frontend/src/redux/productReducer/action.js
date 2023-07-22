@@ -49,7 +49,7 @@ export const addProducts = (data) => (dispatch) => {
     return axios.post(`${BASE_URL}`, data)
         .then((res) => {
 
-            alert(res.data.msg)
+          
             if (res.data.msg == "Added succesfully") {
                 dispatch(getAllCars)
             }

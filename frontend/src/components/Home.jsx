@@ -3,19 +3,18 @@ import Navbar from "./Navbar"
 import { Box, Button, Flex, Input } from '@chakra-ui/react'
 import Dashboard from './Dashboard'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getAllCarsSearch, getAllCarsSorted } from '../redux/productReducer/action'
 const Home = () => {
     let timeoutId;
     const dispatch = useDispatch();
-    const [search, setSearch] = useState("")
     const handleSorting = (value) => {
         dispatch(getAllCarsSorted(value))
     }
 
     const handleSearch = (e) => {
         { timeoutId && clearTimeout(timeoutId) }
-        
+
         timeoutId = setTimeout(() => {
             dispatch(getAllCarsSearch(e.target.value))
         }, 1000)
