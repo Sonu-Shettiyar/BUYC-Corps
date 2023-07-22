@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Heading, Input } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Heading, Input, Spinner, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProducts, getOEMSpecsData, updateProduct } from '../redux/productReducer/action';
@@ -8,7 +8,7 @@ import Navbar from './Navbar'
 
 const AddProduct = () => {
 
-  const { data, OEMData, forUpdate, forEdit } = useSelector((store) => store.carReducer);
+  const { OEMData, isLoading } = useSelector((store) => store.carReducer);
   const { isAuth } = useSelector((store) => store.authReducer);
   const { user } = useSelector((store) => store.authReducer);
   const [tableOEMData, setTableOemData] = useState(OEMData || []);
@@ -27,7 +27,7 @@ const AddProduct = () => {
   const [description, setDescription] = useState([]);
   const [bulletPoint, setBulletPoint] = useState("");
   const navigate = useNavigate();
-  
+  const toast = useToast();
 
   const addDescription = () => {
     let newArr = [...description];
@@ -59,15 +59,36 @@ const AddProduct = () => {
         color,
         description,
       }
-      dispatch(addProducts(payload)).then(() => {
+      dispatch(addProducts(payload)).then((res) => {
+        toast({
+          title: "Added to MarketPlace",
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+          position: "top"
+        })
         navigate("/");
-      }).catch((err) => alert(err.message))
+      }).catch((err) => (
+        toast({
+          title: err?.message,
+          status: 'error',
+          duration: 4000,
+          isClosable: true,
+          position: "top"
+        })
+      ))
     } else {
-      alert("Please Select OEM")
+      toast({
+        title: 'Please Select OEM',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+        position: "top"
+      })
     }
 
   }
- 
+
   if (!isAuth) {
     return <Navigate to={"/login"} />
   }
@@ -76,11 +97,21 @@ const AddProduct = () => {
     dispatch(getOEMSpecsData)
     setTableOemData(OEMData);
   }, [])
-  return (
-
-    <>
-      <Navbar />
-      <Flex justify={"space-between"} m={5}>
+  return (isLoading ? <Center h={"60vh"} >
+    <Flex justify={"center"} alignItems={"center"}>
+      <Spinner
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='gray.200'
+        color='blue.500'
+        size='xl' m={5}
+      /><Heading>
+        Loading.....
+      </Heading>
+    </Flex>
+  </Center> : (<>
+    <Navbar />
+    <Flex justify={"space-between"} m={5}>
       <Box>
         <table>
           <thead>
@@ -97,11 +128,20 @@ const AddProduct = () => {
             {
               tableOEMData?.map((ele) => <OEMCard key={ele._id} {...ele} specs={specs} storeOEMSpecs={storeOEMSpecs} />)
             }
-            
+
           </tbody>
         </table>
         {
-          tableOEMData.length == 0 && <Center><Heading>Loading....</Heading>
+          tableOEMData.length == 0 && <Center h={"60vh"} >
+            <Spinner
+              thickness='4px'
+              speed='0.65s'
+              emptyColor='gray.200'
+              color='blue.500'
+              size='xl' m={5}
+            /><Heading>
+              Loading...
+            </Heading>
           </Center>
         }
       </Box>
@@ -140,11 +180,11 @@ const AddProduct = () => {
           <Input type="text" value={registrationPlace} onChange={(e) => setregistrationPlace(e.target.value)} placeholder='Registration Place' required />
           <br />
           <br />
-          <button style={{padding:"10px",borderRadius:"12px"}} type="submit">{"ADD TO MARKETPLACE"}</button>
+          <button style={{ padding: "10px", borderRadius: "12px" }} type="submit">{"ADD TO MARKETPLACE"}</button>
         </form>
       </Box>
       <Box id="preview">
-        {image ? <Center><img src={image} alt="PREVIEW" width={"300px"} /> </Center>: <Center><img src='https://placehold.co/300x300?text=Car+Preview' width={"50%"}></img></Center>}
+        {image ? <Center><img src={image} alt="PREVIEW" width={"300px"} /> </Center> : <Center><img src='https://placehold.co/300x300?text=Car+Preview' width={"50%"}></img></Center>}
         <br />
         <hr style={{ border: "2px dashed gray" }} />
         <br />
@@ -170,7 +210,7 @@ const AddProduct = () => {
 
       </Box>
     </Flex>
-    </>
+  </>)
 
   )
 }

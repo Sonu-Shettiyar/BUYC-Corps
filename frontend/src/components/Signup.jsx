@@ -13,6 +13,7 @@ import {
     Heading,
     Text,
     useColorModeValue,
+    useToast,
 } from '@chakra-ui/react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -28,6 +29,7 @@ function Signup() {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const toast = useToast();
     const isAuth = useSelector((store) => store.authReducer.isAuth)
 
 
@@ -40,12 +42,23 @@ function Signup() {
         }
         dispatch(signupHandler(payload))
             .then((res) => {
-                //toast-use
                 if (res.data.msg === "User Registered Succesfully") {
-                    alert(res.data.msg)
+                    toast({
+                        title: res.data.msg,
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                        position:"top"
+                      })
                     navigate("/login")
                 } else {
-                    alert(res.data.msg)
+                    toast({
+                        title: res.data.msg,
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                        position:"top"
+                      })
                 }
             })
     }

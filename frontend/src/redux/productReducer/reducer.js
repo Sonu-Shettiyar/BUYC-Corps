@@ -26,7 +26,7 @@ export const reducer = (state = initialState, { type, payload }) => {
         case SORT_PRODUCT:
             return { ...state, isLoading: false, data: payload }
         case MAKE_EDIT_PERMISSION_FALSE:
-            return { ...state, forEdit: false }
+            return { ...state, forEdit: false ,isLoading:false}
         default:
             return state
     }
