@@ -74,8 +74,8 @@ function ProductCard({
     const handleDelete = (id) => {
         dispatch(deleteProduct(id))
     }
-  
-    
+
+
     return (
         <Center py={6}>
             <Stack
@@ -105,18 +105,18 @@ function ProductCard({
                         {title}
                     </Heading>
                     <Flex justify="space-between">
-                    <Text fontWeight={600} color={'gray.500'} size="sm" >
+                        <Text fontWeight={600} color={'gray.500'} size="sm" >
                             {Model} </Text>
                         <Box>
-                           {
-                            Colors?.map((el,ind)=>( <Badge
-                                px={1}
-                                py={1}
-                                bg={el}
-                                key={ind}
-                              >{el}
-                            </Badge>))
-                           }
+                            {
+                                Colors?.map((el, ind) => (<Badge
+                                    px={1}
+                                    py={1}
+                                    bg={el}
+                                    key={ind}
+                                >{el}
+                                </Badge>))
+                            }
                         </Box>
                     </Flex>
 
@@ -134,7 +134,7 @@ function ProductCard({
                             bg={useColorModeValue('gray.50', 'gray.800')}
                             fontWeight={'400'}>
                             Speed: {Max_Speed} km/hr            </Badge>
-                            
+
                         <Badge
                             px={2}
                             py={1}
@@ -152,7 +152,7 @@ function ProductCard({
                             direction={'row'}
                             justifyContent={'space-evenly'}
                             alignItems={'center'}>
-                           
+
                             <UpdateModal id={_id} />
                             <Button
                                 onClick={() => handleDelete(_id)}
@@ -200,46 +200,72 @@ function BasicUsage({
     description,
     Model,
     Max_Speed,
-    Mileage
+    Mileage,
+    Colors
 }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <>
             <Button onClick={onOpen} w={"90%"} bg={"#89cfd8ab"}>SEE MORE DETAILS</Button>
 
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} size={900} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader></ModalHeader>
+                    <ModalHeader textAlign={"center"} fontWeight={600} letterSpacing={6}>{title?.toUpperCase()}</ModalHeader>
+                    <hr style={{border:"1px dashed grey"}} />
                     <ModalCloseButton />
-                    <ModalBody>
+                    <ModalBody >
 
-                        <Box id="preview">
-                            {<Center><img src={image} width={"80%"}></img></Center>}
-                            <br />
-                            <hr style={{ border: "2px dashed gray" }} />
-                            <br />
+                        <Flex >
+                            <Center flex={1}><img src={image} width={"80%"}></img></Center>
 
-                            <h1>Title: {title}</h1> <br />
-                            <h1>Kilometers: {KMsOnOdometer}</h1> <br />
-                            <h3>Description:</h3>
-                            <div style={{ marginLeft: "20px" }}> <ul>
-                                {
-                                    description?.map((el) => {
-                                        return <li key={el}>{el}</li>
-                                    })
-                                }
-                            </ul></div>
-                            <br />
-                            <h1>Major Scratches: {majorScratches}</h1> <br />
-                            <h1>Original Paint: {originalPaint}</h1> <br />
-                            <h1>No. of Accident Reported: {accidentsReported}</h1> <br />
-                            <h1>Previous Owner: {previousBuyers}</h1> <br />
-                            <h1>Registration Place: {registrationPlace}</h1> <br />
+                            <Flex flex={1}>
+                            <Box >
+                                <br />
 
+                                <h1>Model: <span>{Model}</span></h1> <br />
+                                <h1>Kilometers: <span>{KMsOnOdometer} km</span></h1> <br />
+                                <h3 style={{fontWeight:"700"}}>Description:</h3>
+                                <div style={{ marginLeft: "20px" }}> <ul>
+                                    {
+                                        description?.map((el) => {
+                                            return <li key={el}>{el}</li>
+                                        })
+                                    }
+                                </ul></div>
+                                <br />
+                                <h1>Major Scratches: <span>{majorScratches}</span></h1> <br />
+                                <h1>Original Paint: <span>{originalPaint}</span></h1> <br />
+                                <h1>No. of Accident Reported: <span>{accidentsReported}</span></h1> <br />
+                                <h1>Owner: <span>{previousBuyers}th</span></h1> <br />
+                                <h1>Registration Place: <span>{registrationPlace}</span></h1> <br />
+                            </Box>
+                                <Box ml={20}> 
+                                    <br />
+                                    <h1>Dealer: <span>{dealerName}</span>
+                                    </h1>
+                                    <br />
+                                    <h1>Price: <span>{price}</span></h1>
+                                    <br />
 
+                                    <h1>Max Speed: <span>{Max_Speed}</span></h1>
+                                    <br />
 
-                        </Box>
+                                    <h1>Mileage: <span>{Mileage}</span></h1>
+                                    <br />
+                                    <h1>Available Colors:</h1>
+                                    {
+                                        Colors?.map((el) => (
+                                            <Box border={"1px solid #8f96954d"} mb={2} key={el} bg={el} py={3} px={3}>
+                                                {el}
+                                            </Box>
+                                        ))
+                                    }
+                            </Box>
+                            </Flex>
+                        </Flex>
+                    <hr style={{border:"1px dashed grey"}} />
+
                     </ModalBody>
 
                     <ModalFooter>

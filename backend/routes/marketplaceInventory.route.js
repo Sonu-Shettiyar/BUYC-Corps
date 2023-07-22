@@ -7,14 +7,12 @@ const cors = require("cors");
 inventoryRouter.use(cors());
 
 inventoryRouter.get('/', async (req, res) => {
-    const { sort, search, year, title } = req.query;
+    const { sort, search } = req.query;
     let query = {};
     let sortValue;
-    if (year) { query.Year = year }
-    if (title) { query.title = { $regex: title, $options: 'i' } }
+   
     if (sort === "asc") { sortValue = { price: 1 } } else if (sort === "desc") { sortValue = { price: -1 } }
     if (search) { query.Model = { $regex: search, $options: 'i' } }
-// console.log()
 
     try {
         const allInventoryData = await MarketplaceInventory.find(query).sort(sortValue);

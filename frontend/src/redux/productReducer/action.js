@@ -16,9 +16,8 @@ export const getAllCars = (dispatch) => {
 export const getAllCarsSearch = (data) => (dispatch) => {
     dispatch({ type: PRODUCT_LOADING })
 
-    axios.get(`${BASE_URL}?search=${data}&year=${data}&title=${data}`)
+    axios.get(`${BASE_URL}?search=${data}`)
         .then((res) => {
-            console.log("called")
             dispatch({ type: GET_PRODUCT, payload: res.data })
         }).catch((err) => {
             dispatch({ type: PRODUCT_FETCHING_FAILED })

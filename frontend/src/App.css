@@ -59,6 +59,13 @@ td,th{
     grid-template-columns: repeat(3,470px);
     gap: 20px;
 }
+h1{
+    color: black;
+    font-weight: 700;
+}
+span{
+font-weight: 500;
+}
 
 @media all and (min-width:800px) and (max-width:1000px){
     #grid{
