@@ -1,8 +1,7 @@
 import axios from "axios"
 import { GET_OEM_SPECS, GET_PRODUCT, PRODUCT_FETCHING_FAILED, PRODUCT_LOADING, UPDATE_PRODUCT } from "../actionTypes"
 
-// const BASE_URL = "https://buyatcars.onrender.com/inventory"
-const BASE_URL = "http://localhost:4500/inventory"
+const BASE_URL = "https://buyatcars.onrender.com/inventory"
 
 export const getAllCars = (dispatch) => {
     dispatch({ type: PRODUCT_LOADING })
